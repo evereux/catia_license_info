@@ -114,9 +114,12 @@ def main(config_file):
     log_data = [(item[sort_on], item) for item in log_data]
     log_data.sort(reverse=True)
     result = [data for (key, data) in log_data]
-    pretty_print_log_data(result)
+    
+    return result
 
 
 if __name__ == "__main__":
+
     config_file = 'config.json'
-    main(config_file)
+    result = main(config_file)
+    pretty_print_log_data(result)
