@@ -8,13 +8,13 @@ The DSLS Administrator tool must be configured to log license usage. To do this 
 
 ## Why?
 
-Access to the DSLS Administration tool should have limited access by only the CATIA Administrator or IT depertment. The script atttempts to provide easy access to license usage for CATIA users without having to check with administrators (or shouting across the office).
+The script atttempts to provide easy access to license usage for CATIA users without having to check with administrators (or shouting across the office).
 
 
 ## Requirements
 * Python 3.5 >=
 * Flask
-* 
+* For the user running the script they must have read only access to the DSLS Administration logs folder. For the simple webserver the machine on which the script is running must have the appropriate firewall ports opened.
 
 
 ## Running
@@ -50,9 +50,7 @@ You will be presented with
 For a simple webserver version of the application:
     
     python run.py --webserver
-    
-The first time the script is run the user is prompted to provide 
-details for the location of DSLS License server log files.
+
 
 
 
