@@ -1,16 +1,27 @@
-#! python3
+#! /usr/bin/python3.6
 # -*- coding: utf-8 -*-
 
-from flask import render_template
+from flask import redirect, render_template, request, url_for
 
-from main import main
+from application_server import SearchForm
 from application_server import app
-
+from application_server.main import main
 
 
 @app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def index():
 
-    data = main('config.json')
+    search = request.args.get('search')
+    form = SearchForm()
 
-    return render_template('index.html', data=data)
+    if form.validate_on_submit():
+
+        search = form.search.data
+
+        return redirect(url_for('index', search=search))
+
+    form.search.data = search
+    data = main('config.json', search=search)
+
+    return render_template('index.html', data=data, form=form)

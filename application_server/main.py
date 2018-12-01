@@ -1,4 +1,4 @@
-#! python3
+#! /usr/bin/python3.6
 # -*- coding: utf-8 -*-
 
 """
@@ -53,17 +53,22 @@ def log_entry_parser(entry_):
     return entry
 
 
-def read_log_file(log_file, log_lines):
+def read_log_file(log_file, log_lines, search=None):
     """
 
-    :param log_file:
-    :param log_lines:
+    :param log_file: text log file
+    :param log_lines: list()
+    :param search: string()
     :return:
     """
     with open(log_file, 'r', errors='ignore') as f:
         for line in f:
             if 'USGTRACING' in line:
-                log_lines.append(log_entry_parser(line.strip()))
+                if search:
+                    if search.lower() in line.lower():
+                        log_lines.append(log_entry_parser(line.strip()))
+                else:
+                    log_lines.append(log_entry_parser(line.strip()))
     return log_lines
 
 
@@ -81,9 +86,10 @@ def pretty_print_log_data(log_data):
                                                                                     entry['machine']))
 
 
-def main(config_file):
+def main(config_file, search=None):
     """
-
+    :param config_file: config.json
+    :param search: string()
     :return:
     """
 
@@ -102,7 +108,7 @@ def main(config_file):
     for root, dir, files in os.walk(json_data['log_file_directory']):
         files = [fi for fi in files if fi.endswith(".log")]
         for file in sorted(files, reverse=True):
-            log_data = read_log_file(os.path.join(root, file), log_data)
+            log_data = read_log_file(os.path.join(root, file), log_data, search)
             if i == max_files:
                 break
             i += 1
@@ -114,12 +120,11 @@ def main(config_file):
     log_data = [(item[sort_on], item) for item in log_data]
     log_data.sort(reverse=True)
     result = [data for (key, data) in log_data]
-    
+
     return result
 
 
 if __name__ == "__main__":
-
     config_file = 'config.json'
     result = main(config_file)
     pretty_print_log_data(result)
