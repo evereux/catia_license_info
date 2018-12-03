@@ -15,6 +15,7 @@
 
 from datetime import datetime
 import json
+from operator import itemgetter
 import os
 
 
@@ -116,12 +117,9 @@ def main(config_file, search=None):
             break
 
     # sort the log_data by datetime in reverse
-    sort_on = 'date'
-    log_data = [(item[sort_on], item) for item in log_data]
-    log_data.sort(reverse=True)
-    result = [data for (key, data) in log_data]
+    log_data.sort(key=itemgetter('date'), reverse=True)
 
-    return result
+    return log_data
 
 
 if __name__ == "__main__":
