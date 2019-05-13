@@ -103,6 +103,10 @@ def main(config_file, search=None):
     with open(config_file) as f:
         json_data = json.load(f)
 
+    # had instances where max_files wasn't set. no clue why, problem was intermittent.
+    if 'max_files' not in json_data:
+        json_data['max_files'] = 1
+
     log_data = list()
     max_files = json_data['max_files']
     i = 0
